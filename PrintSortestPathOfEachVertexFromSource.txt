@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+void printsortPath(vector< pair<int,int> > graph[],int v,int s,int indegree[])
+{
+    int dist[v];
+    //initailise the distance of each node as infinity inititally 
+    for(int i=0;i<v;i++) dist[i] = INT_MAX;
+    //distance of the source vertex is 0
+    dist[s] = 0;
+    queue<int> q;
+    //push all the vertex of 0 degree to the queue
+    for(int i=0;i<v;i++) if(indegree[i] == 0) q.push(i);
+    while(!q.empty())
+    {
+        int a = q.front();
+        q.pop();
+        for(pair<int,int> p: graph[a])
+        {   indegree[p.first]--;
+            //if indegree of any of the adjecent becomes 0 then push it in queue
+            if(indegree[p.first] == 0)
+            {
+                q.push(p.first);
+            }
+            //reduce the distance of the adjecent of the vertex if the distance priviously is greater
+            dist[p.first] = min(dist[p.first],dist[a] + p.second);
+        }
+    }
+    for(int i=0;i<v;i++)
+    {
+        cout<<dist[i]<<" ";
+    }
+
+}
+int main()
+{
+    int v;
+    cin>>v;
+    int indegree[v];
+    for(int i=0;i<v;i++) indegree[i] = 0;
+    //graph to store the weight and the vertex links
+    vector< pair<int,int> > graph[v];
+    int u,x,w;
+    while(cin>>u>>x>>w)
+    {
+        graph[u].push_back(make_pair(x,w));
+        indegree[x]++;
+    }
+    printsortPath(graph,v,0,indegree);
+}

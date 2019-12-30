@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+void bfs(vector<int> graph[],int V,int s)
+{
+    queue<int> q;
+    q.push(s);
+    bool visited[V];
+    visited[s] = true;
+    //cout<<s<<" ";
+    while(!q.empty())
+    {
+        int v= q.front();
+        cout<<v<<" ";
+        q.pop();
+        for(int i:graph[v])
+        {
+            if(visited[i]==false)
+            {
+                q.push(i);
+                visited[i] = true;
+            }
+        }
+    }
+}
+void dfs(vector<int> graph[],vector<bool> &visited,int v,int s)
+{
+    visited[s] = true;
+    cout<<s<<" ";
+    for(int i:graph[s])
+    {
+        if(visited[i] == false)
+        {
+            dfs(graph,visited,v,i);
+        }
+    }
+}
+int main()
+{
+    int V = 7;
+    vector<int> graph[V];
+    int n;
+    int a,b;
+    cin>>n;
+    for(int i=0;i<n;i++)
+    {
+        cin>>a>>b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
+    bfs(graph,V,0);
+    cout<<"\n";
+    vector<bool> visited(V);
+    dfs(graph,visited,V,0);
+    
+}

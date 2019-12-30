@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+void printTopologicalSort(vector<int> graph[],int v,int indegree[])
+{
+    queue<int> q;
+    //push the vertex whose indegree is 0 means vertex which are not dependent on any other
+    for(int i=0;i<v;i++) if(indegree[i] == 0) q.push(i);
+    // while all the indegree vertex do not end
+    while(!q.empty())
+    {
+        int a = q.front();
+        q.pop();
+        cout<<a<<" ";
+        for(int j:graph[a])
+        {   // decrease the indegree of every adjecent of the previous vertex
+            indegree[j]--;
+            //if the indegree of any adjecent becomes 0 then push it into the queue
+            if(indegree[j] == 0)
+            {
+                q.push(j);
+            }
+        }
+    }
+}
+int main()
+{
+    int v;
+    cin>>v;
+    // defining the graph 
+    vector<int> graph[v];
+    int u,w;
+    // calculating the indegree of each vertex
+    int indegree[v];
+    //initialing the degree of each vertex 0 inititally
+    for(int i=0;i<v;i++) indegree[i] = 0;
+    while(cin>>u>>w)
+    {   
+        graph[u].push_back(w);
+        //increasing the indegree of each vertex
+        indegree[w]++;
+    }
+    // printTopologicalSort for the directed graph;
+    printTopologicalSort(graph,v,indegree);
+    //detect cycle in the directed graph;
+}
